@@ -23,9 +23,5 @@ from django.contrib.auth.views import LogoutView
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/" , include("accounts.urls")),
-    # custom logout page that shows a confirmation and a POST form
-    path("accounts/logout/", LogoutView.as_view(template_name="registration/logout_confirm.html"), name="logout"),
-    path("accounts/", include("django.contrib.auth.urls")),
-    path("", TemplateView.as_view(template_name="home.html"), name="home"),
 ]
 
