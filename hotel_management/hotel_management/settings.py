@@ -57,7 +57,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'templates'],
+            BASE_DIR / "accounts/templates" , BASE_DIR / "home/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,6 +128,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
 
 # یا "/" اگر خواستی
 

@@ -20,8 +20,18 @@ from django.views.generic.base import TemplateView  # new
 
 from django.contrib.auth.views import LogoutView
 
+from django.contrib import admin
+from django.urls import path, include
+from django.shortcuts import redirect
+
+def home(request):
+    return redirect('/home/')  # اگر می‌خوای صفحه اصلی را render کنی، می‌توانیم template درست کنیم
+
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("accounts/" , include("accounts.urls")),
+    path('admin/', admin.site.urls),
+    path('', lambda request: redirect('home/')),  # وقتی روت باز شد، به /home/ می‌رود
+    path('accounts/', include('accounts.urls')),
+    path('home/', include('home.urls')),  # صفحه اصلی را در اپ جداگانه home نگه داریم
 ]
+
 

@@ -1,24 +1,24 @@
-# views.py
-from django.shortcuts import render, redirect
-from .forms import CustomUserForm
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
+from django.contrib.auth import login
 
-def register_page(request):
-    if request.method == 'POST':
+def signup(request):
+    if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('signin_done')
+            user = form.save()
+            login(request, user)
+            return redirect("signup_done")
+        else:
+            print(form.errors)  # نمایش خطاهای فرم برای debug
     else:
         form = CustomUserCreationForm()
-
-    return render(request, 'signin/signin.html', {'form': form})
-
-
-def signin_done(request):
-    return render(request, 'signin/signin_done.html')
+    return render(request, "signup/signup.html", {"form": form})
 
 
-def login_page(request):
-    return render(request, 'login/login.html')
+def signup_done(request):
+    return render(request, "signup/signup_done.html")
+
+
+def user_login(request):
+    pass

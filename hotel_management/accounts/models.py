@@ -1,14 +1,44 @@
+# accounts/models.py
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 
-
 class CustomUserManager(BaseUserManager):
-    def create_user(self, mobaile , email , first_name , last_name , password = None):
-        if not mobile:
-            raise ValueError("شماره موبایل الزامی است")
+    def create_user(self, phone_number, email, first_name, last_name, password=None):
+        if not phone_number:
+            raise ValueError("Phone number is required")
+        if not email:
+            raise ValueError("Email is required")
+
+        email = self.normalize_email(email)
         user = self.model(
-            mobile = 
+            phone_number=phone_number,
+            email=email,
+            first_name=first_name,
+            last_name=last_name
         )
-                
-            
-        
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, phone_number, email, first_name, last_name, password):
+        user = self.create_user(phone_number, email, first_name, last_name, password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        return user
+
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    phone_number = models.CharField(max_length=15, unique=True)
+    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'phone_number'
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} ({self.phone_number})"
