@@ -1,4 +1,3 @@
-# accounts/models.py
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 
@@ -6,10 +5,9 @@ class CustomUserManager(BaseUserManager):
     def create_user(self, phone_number, email, first_name, last_name, password=None):
         if not phone_number:
             raise ValueError("Phone number is required")
-        if not email:
-            raise ValueError("Email is required")
 
         email = self.normalize_email(email)
+
         user = self.model(
             phone_number=phone_number,
             email=email,
@@ -27,6 +25,7 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=15, unique=True)
     email = models.EmailField(unique=True)
@@ -37,8 +36,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'phone_number'
-    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
+    USERNAME_FIELD = "phone_number"
+    REQUIRED_FIELDS = ["email", "first_name", "last_name"]
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.phone_number})"
+        return self.phone_number

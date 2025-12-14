@@ -1,35 +1,13 @@
 <form method="POST">
     {% csrf_token %}
     {{ form.non_field_errors }}
-    <p>
-        {{ form.first_name.label_tag }}<br>
-        {{ form.first_name }}
-        {{ form.first_name.errors }}
-    </p>
-    <p>
-        {{ form.last_name.label_tag }}<br>
-        {{ form.last_name }}
-        {{ form.last_name.errors }}
-    </p>
-    <p>
-        {{ form.email.label_tag }}<br>
-        {{ form.email }}
-        {{ form.email.errors }}
-    </p>
-    <p>
-        {{ form.phone_number.label_tag }}<br>
-        {{ form.phone_number }}
-        {{ form.phone_number.errors }}
-    </p>
-    <p>
-        {{ form.password1.label_tag }}<br>
-        {{ form.password1 }}
-        {{ form.password1.errors }}
-    </p>
-    <p>
-        {{ form.password2.label_tag }}<br>
-        {{ form.password2 }}
-        {{ form.password2.errors }}
-    </p>
-    <button type="submit">Send</button>
+
+    {{ form.first_name.label_tag }} {{ form.first_name }}<br>
+    {{ form.last_name.label_tag }} {{ form.last_name }}<br>
+    {{ form.email.label_tag }} {{ form.email }}<br>
+    {{ form.phone_number.label_tag }} {{ form.phone_number }}<br>
+    {{ form.password1.label_tag }} {{ form.password1 }}<br>
+    {{ form.password2.label_tag }} {{ form.password2 }}<br>
+
+    <button type="submit">Sign Up</button>
 </form>

@@ -1,16 +1,37 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="fa">
 <head>
-    <title>خانه هتل</title>
+    <meta charset="UTF-8">
+    <title>صفحه اصلی</title>
 </head>
 <body>
-    <nav>
-        <a href="{% url 'signup' %}">ثبت‌نام</a> | 
-        <a href="{% url 'login' %}">ورود</a>
-    </nav>
 
-    <h1>🏨 خوش آمدید به هتل ما!</h1>
-    <p>در این سایت می‌توانید اتاق‌ها را رزرو کنید.</p>
+<!-- Navbar -->
+<nav>
+    {% if request.user.is_authenticated %}
+        <span> Welcome {{ request.user.first_name }}!</span>
+        <a href="{% url 'home:reserve' %}">Reserve a Room</a>
+        <a href="{% url 'home:dashboard' %}">Profile</a>
+        <form method="POST" action="{% url 'accounts:logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Log Out</button>
+        </form>
+    {% else %}
+        <!-- وقتی لاگین نکرده -->
+        <a href="{% url 'accounts:login' %}?next={% url 'home:reserve' %}">Reserve a Room</a>
+        <a href="{% url 'accounts:login' %}">Log In</a>
+        <a href="{% url 'accounts:signup' %}">Sign Up</a>
+    {% endif %}
+</nav>
+
+<!-- Main Content -->
+<h1>Home Page</h1>
+
+{% if request.user.is_authenticated %}
+    <p>You are logged in. You can access the dashboard and site features.</p>
+{% else %}
+    <p>Welcome! Please log in or sign up to access the site features.</p>
+{% endif %}
+
 </body>
 </html>

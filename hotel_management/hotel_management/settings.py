@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    ''
     'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -57,7 +56,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / "accounts/templates" , BASE_DIR / "home/templates"],
+            BASE_DIR / "accounts/templates", BASE_DIR / "home/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -125,12 +124,13 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
-# یا "/" اگر خواستی
 
 
