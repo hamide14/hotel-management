@@ -31,6 +31,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'dashboard',
+    'home',
+    'rooms',
+    'bookings',
     'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -56,7 +60,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / "accounts/templates", BASE_DIR / "home/templates"],
+            BASE_DIR / "accounts/templates", BASE_DIR / "home/templates", BASE_DIR / "bookings/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -132,5 +136,4 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-
-
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

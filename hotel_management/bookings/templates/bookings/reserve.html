@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>Reserve Room</title>
+</head>
+<body>
+<h1>Reserve Your Room</h1>
+<p>Welcome, {{ request.user.first_name }}!</p>
+
+{% if messages %}
+    {% for message in messages %}
+        <p style="color:red;">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Reserve Now</button>
+</form>
+
+<a href="{% url 'home:home' %}">Back to Home</a>
+</body>
+</html>

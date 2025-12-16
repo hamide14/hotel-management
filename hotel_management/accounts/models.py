@@ -1,43 +1,26 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-
-class CustomUserManager(BaseUserManager):
-    def create_user(self, phone_number, email, first_name, last_name, password=None):
-        if not phone_number:
-            raise ValueError("Phone number is required")
-
-        email = self.normalize_email(email)
-
-        user = self.model(
-            phone_number=phone_number,
-            email=email,
-            first_name=first_name,
-            last_name=last_name
-        )
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, phone_number, email, first_name, last_name, password):
-        user = self.create_user(phone_number, email, first_name, last_name, password)
-        user.is_staff = True
-        user.is_superuser = True
-        user.save(using=self._db)
-        return user
+from django.db import models
+from django.conf import settings
+from django.utils import timezone
+from datetime import timedelta
 
 
-class CustomUser(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractUser):
+    username = None  
     phone_number = models.CharField(max_length=15, unique=True)
-    email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
 
-    objects = CustomUserManager()
-
-    USERNAME_FIELD = "phone_number"
-    REQUIRED_FIELDS = ["email", "first_name", "last_name"]
+    USERNAME_FIELD = 'phone_number'  
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
 
     def __str__(self):
-        return self.phone_number
+        return f"{self.first_name} {self.last_name}"
+
+class EmailOTP(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def is_valid(self):
+        return timezone.now() < self.created_at + timedelta(minutes=5)
