@@ -51,10 +51,10 @@ def login_view(request):
                 # return user object
                 login(request, user)  # session
                 return redirect("home:home")
-            else:
+            # else:
                 # return None
-                messages.error(
-                    request, "Phone number or password is incorrect")
+                # messages.error(
+                #     request, "Phone number or password is incorrect")
     else:
         form = LoginForm()
 

@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Reservation Confirmed</title>
+    <title>Reservation Confirmation</title>
 </head>
 <body>
-<h1>✅ Your reservation has been successfully made!</h1>
-<a href="{% url 'home:home' %}">Back to Home</a>
+    <h1>Reservation Confirmed!</h1>
+    <p>You have 10 minutes to complete the payment.</p>
+
+    <p>
+        <a href="{% url 'bookings:pay' reservation.id %}">Pay Now</a>
+    </p>
+    <p>
+        <a href="{% url 'dashboard:dashboard' %}">Dashboard</a> <!-- داشبورد اپ home -->
+    </p>
+    <p>
+        <a href="{% url 'home:home' %}">Back to Home</a>
+    </p>
 </body>
 </html>

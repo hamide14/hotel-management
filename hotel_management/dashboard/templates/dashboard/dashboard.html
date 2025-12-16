@@ -1,41 +1,69 @@
-
-<!-- dashboard/dashboard.html -->
 <h2>Profile Information</h2>
 
 {% if message %}
-    <p style="color:green;">{{ message }}</p>
+  <p style="color:green;">{{ message }}</p>
 {% endif %}
 
 <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Update Profile</button>
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Update Profile</button>
 </form>
 
-<hr>
+<hr />
 
-<h2>Reservation History</h2>
-<table border="1">
+<h2>رزروهای من</h2>
+<table border="1" cellpadding="5">
+  <tr>
+    <th>اتاق</th>
+    <th>تاریخ</th>
+    <th>وضعیت پرداخت</th>
+    <th>عملیات</th>
+  </tr>
+  {% for r in reservations %}
     <tr>
-        <th>Room Type</th>
-        <th>Check-in</th>
-        <th>Check-out</th>
-        <th>Status</th>
-        <th>Action</th>
+      <td>{{ r.room_type.name }}</td>
+      <td>{{ r.checkin_date }} تا {{ r.checkout_date }}</td>
+      <td>
+        {% if r.is_paid %}
+          پرداخت شده
+        {% elif r.is_payment_pending %}
+          Pending
+        {% else %}
+          Expired
+        {% endif %}
+      </td>
+      <td>
+        {% if r.is_payment_pending %}
+          <a href="{% url 'bookings:pay' r.id %}">پرداخت</a>
+        {% endif %}
+      </td>
     </tr>
-    {% for r in reservations %}
-    <tr>
-        <td>{{ r.room_type.name }}</td>
-        <td>{{ r.check_in }}</td>
-        <td>{{ r.check_out }}</td>
-        <td>{{ r.status }}</td>
-        <td>
-            {% if r.status == 'pending' %}
-                <a href="{% url 'bookings:payment' r.id %}">Pay Now</a>
-            {% else %}
-                -
-            {% endif %}
-        </td>
-    </tr>
-    {% endfor %}
+  {% endfor %}
 </table>
+
+{% comment %} <h2>Reservation History</h2>
+<table border="1">
+  <tr>
+    <th>Room Type</th>
+    <th>Check-in</th>
+    <th>Check-out</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+  {% for r in reservations %}
+    <tr>
+      <td>{{ r.room_type.name }}</td>
+      <td>{{ r.check_in }}</td>
+      <td>{{ r.check_out }}</td>
+      <td>{{ r.status }}</td>
+      <td>
+        {% if r.status == 'pending' %}
+          <a href="{% url 'bookings:payment' r.id %}">Pay Now</a>
+        {% else %}
+          -
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+</table> {% endcomment %}

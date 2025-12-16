@@ -1,30 +1,26 @@
 from django.shortcuts import render
-
-# Create your views here.
-# dashboard/views.py
-from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from bookings.models import Reservation
-from accounts.forms import CustomUserChangeForm  # فرم ویرایش پروفایل
+from accounts.forms import CustomUserChangeForm
+
 
 @login_required
 def dashboard(request):
     user = request.user
 
-    # فرم ویرایش پروفایل
     if request.method == "POST":
-        form = CustomUserChangeForm(request.POST, instance=user)
+        form = CustomUserChangeForm(request.POST, instance=user)  #change informations in dashboard
         if form.is_valid():
             form.save()
             message = "Profile updated successfully!"
         else:
             message = None
     else:
-        form = CustomUserChangeForm(instance=user)
+        form = CustomUserChangeForm(instance=user) # current informations will show in form 
         message = None
 
-    # رزروهای کاربر
-    reservations = Reservation.objects.filter(user=user).order_by('-created_at')
+    reservations = Reservation.objects.filter(
+        user=user).order_by('-created_at')    #reserves will be shown from old to new
 
     context = {
         "form": form,

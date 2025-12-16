@@ -7,7 +7,7 @@ from datetime import timedelta
 
 
 class CustomUser(AbstractUser):
-    username = None  
+    usename= None
     phone_number = models.CharField(max_length=15, unique=True)
 
     USERNAME_FIELD = 'phone_number'  
