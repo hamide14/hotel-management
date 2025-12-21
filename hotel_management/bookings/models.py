@@ -18,7 +18,7 @@ class Reservation(models.Model):
     guests = models.PositiveIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # فیلدهای پرداخت و وضعیت رزرو
+  
     is_paid = models.BooleanField(default=False)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
     payment_deadline = models.DateTimeField(null=True, blank=True)

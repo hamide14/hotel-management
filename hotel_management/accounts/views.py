@@ -17,20 +17,27 @@ def signup(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect("accounts:signup_done")
-        else:
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
 
-            print("Form errors:", form.errors)
-            for field, errors in form.errors.items():
-                for error in errors:
-                    print(f"{field}: {error}")
+            # ارسال OTP
+            code = str(random.randint(100000, 999999))
+            EmailOTP.objects.create(user=user, code=code)
 
+            send_mail(
+                "Verify your email",
+                f"Your verification code is: {code}",
+                "noreply@hotel.com",
+                [user.email]
+            )
+
+            request.session["otp_user_id"] = user.id
+            return redirect("accounts:verify_signup_otp")
     else:
         form = CustomUserCreationForm()
 
     return render(request, "signup/signup.html", {"form": form})
-
 
 def signup_done(request):
     return render(request, "signup/signup_done.html")
@@ -124,6 +131,38 @@ def verify_otp(request):
                     "form": form,
                     "error": "Invalid or expired code"
                 })
+    else:
+        form = OTPForm()
+
+    return render(request, "OTP/verify_otp.html", {"form": form})
+
+
+def verify_signup_otp(request):
+    user_id = request.session.get("otp_user_id")
+    if not user_id:
+        return redirect("accounts:signup")
+
+    user = get_object_or_404(User, id=user_id)
+
+    if request.method == "POST":
+        form = OTPForm(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data["code"]
+
+            otp = EmailOTP.objects.filter(
+                user=user,
+                code=code
+            ).order_by("-created_at").first()
+
+            if otp and otp.is_valid():
+                user.is_active = True
+                user.save()
+
+                otp.delete()
+                login(request, user)
+                return redirect("home:home")
+            else:
+                messages.error(request, "Invalid or expired OTP")
     else:
         form = OTPForm()
 

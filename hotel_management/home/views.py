@@ -1,17 +1,40 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+
+from bookings.models import Reservation
+from accounts.forms import CustomUserChangeForm
 
 
 def home(request):
-    #when user goes to home/
+    # when user goes to /
     return render(request, "home/home.html")
 
-#request.user.is_authenticated
-@login_required(login_url='accounts:login')
-def reserve(request):
-        return render(request, "bookings/reserve.html")  
-   
+
+
 
 @login_required(login_url='accounts:login')
 def dashboard(request):
-    return render(request, "dashboard/dashboard.html")
+    user = request.user
+
+    if request.method == "POST":
+        form = CustomUserChangeForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            message = "Profile updated successfully!"
+        else:
+            message = None
+    else:
+        form = CustomUserChangeForm(instance=user)
+        message = None
+
+    reservations = Reservation.objects.filter(
+        user=user
+    ).order_by('-created_at')
+
+    context = {
+        "form": form,
+        "message": message,
+        "reservations": reservations
+    }
+
+    return render(request, "dashboard/dashboard.html", context)
