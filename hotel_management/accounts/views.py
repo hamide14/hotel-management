@@ -17,30 +17,17 @@ def signup(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False
-            user.save()
-
-            # ارسال OTP
-            code = str(random.randint(100000, 999999))
-            EmailOTP.objects.create(user=user, code=code)
-
-            send_mail(
-                "Verify your email",
-                f"Your verification code is: {code}",
-                "noreply@hotel.com",
-                [user.email]
-            )
-
-            request.session["otp_user_id"] = user.id
-            return redirect("accounts:verify_signup_otp")
+            form.save()
+            return redirect("accounts:signup_done")
     else:
         form = CustomUserCreationForm()
 
     return render(request, "signup/signup.html", {"form": form})
 
+
 def signup_done(request):
     return render(request, "signup/signup_done.html")
+
 
 
 def login_view(request):
@@ -58,10 +45,10 @@ def login_view(request):
                 # return user object
                 login(request, user)  # session
                 return redirect("home:home")
-            # else:
-                # return None
-                # messages.error(
-                #     request, "Phone number or password is incorrect")
+            else:
+                return None
+                messages.error(
+                    request, "Phone number or password is incorrect")
     else:
         form = LoginForm()
 
@@ -84,6 +71,9 @@ def send_otp(request):
                     "error": "User not found"
                 })
 
+            # حذف OTPهای قبلی
+            EmailOTP.objects.filter(user=user).delete()
+
             code = str(random.randint(100000, 999999))
             EmailOTP.objects.create(user=user, code=code)
 
@@ -102,6 +92,7 @@ def send_otp(request):
     return render(request, "OTP/send_otp.html", {"form": form})
 
 
+
 def verify_otp(request):
     user_id = request.session.get("otp_user_id")
     if not user_id:
@@ -112,29 +103,23 @@ def verify_otp(request):
         if form.is_valid():
             code = form.cleaned_data["code"]
 
-            print("user_id:", user_id)
-            print("code entered:", code)
-
             otp = EmailOTP.objects.filter(
                 user_id=user_id,
                 code=code
             ).order_by("-created_at").first()
 
-            print("otp found:", otp)
-
-            if otp and otp.is_valid():
+            if otp and otp.is_valid() and otp.user.is_active:
                 login(request, otp.user)
                 otp.delete()
+                request.session.pop("otp_user_id", None)
                 return redirect("home:home")
             else:
-                return render(request, "OTP/verify_otp.html", {
-                    "form": form,
-                    "error": "Invalid or expired code"
-                })
+                messages.error(request, "Invalid or expired code")
     else:
         form = OTPForm()
 
     return render(request, "OTP/verify_otp.html", {"form": form})
+
 
 
 def verify_signup_otp(request):
@@ -159,6 +144,8 @@ def verify_signup_otp(request):
                 user.save()
 
                 otp.delete()
+                request.session.pop("otp_user_id", None)
+
                 login(request, user)
                 return redirect("home:home")
             else:
@@ -167,3 +154,4 @@ def verify_signup_otp(request):
         form = OTPForm()
 
     return render(request, "OTP/verify_otp.html", {"form": form})
+
