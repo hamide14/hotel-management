@@ -42,13 +42,13 @@ def login_view(request):
 
             user = authenticate(request, username=phone, password=password)
             if user:
-                # return user object
-                login(request, user)  # session
+                login(request, user)
                 return redirect("home:home")
             else:
-                return None
-                messages.error(
-                    request, "Phone number or password is incorrect")
+                # پیام خطا به کاربر
+                messages.error(request, "Phone number or password is incorrect")
+                # فرم رو دوباره با پیام خطا رندر می‌کنیم
+                return render(request, "login/login.html", {"form": form})
     else:
         form = LoginForm()
 
