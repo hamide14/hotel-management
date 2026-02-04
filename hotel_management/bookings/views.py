@@ -19,18 +19,18 @@ def reserve(request):
             checkin = form.cleaned_data['checkin_date']
             checkout = form.cleaned_data['checkout_date']
 
-            # بررسی تاریخ
+            
             if checkin >= checkout:
                 messages.error(request, "Checkout date must be after check-in date.")
             else:
-                # لغو رزروهای منقضی
+                #if pending reservation is out of time it will be cancelled
                 Reservation.objects.filter(
                     room_type=room_type,
                     status="pending",
                     payment_deadline__lt=timezone.now()
                 ).update(status="cancelled")
 
-                # تعداد رزروهای موجود برای این نوع اتاق
+                #count : how many reserve do we have for this date for the roomtype
                 booked_count = Reservation.objects.filter(
                     room_type=room_type,
                     status__in=["pending", "paid"],
@@ -38,40 +38,46 @@ def reserve(request):
                     checkout_date__gt=checkin
                 ).count()
 
-                # بررسی ظرفیت
+                #check room availability
                 if booked_count >= ROOM_CAPACITY[room_type]:
                     messages.error(
                         request,
                         f"Sorry, all {room_type} rooms are booked for these dates."
                     )
                 else:
-                    # ذخیره رزرو
-                    reservation = form.save(commit=False)
+                    #we have free room so save
+                    reservation = form.save(commit=False)# not yet save in database
                     reservation.user = request.user
                     reservation.is_paid = False
                     reservation.status = "pending"
                     reservation.payment_deadline = timezone.now() + timedelta(minutes=10)
                     reservation.save()
 
-                    # نمایش پیام موفقیت با قیمت کل
+                    
                     messages.success(
                         request,
                         f"Room reserved successfully! Total Price: {reservation.total_price}"
                     )
 
                     return redirect('bookings:confirm', reservation_id=reservation.id)
-    else:
+    else:# its a Get
         form = ReservationForm()
 
     return render(request, "bookings/reserve.html", {"form": form})
 
 
+
+
+
+
+
 @login_required(login_url='accounts:login')
+# it confirm reserve page
 def confirm_reservation(request, reservation_id):
     reservation = get_object_or_404(
         Reservation, id=reservation_id, user=request.user)
 
-    # اگر رزرو منقضی شده باشد
+    # reserve out of time
     if reservation.is_payment_expired:
         reservation.status = "cancelled"
         reservation.save()
@@ -98,12 +104,12 @@ def pay_reservation(request, reservation_id):
     else:
         messages.info(request, "Reservation already paid.")
 
-    return redirect('bookings:dashboard')
+    return redirect('home:dashboard')
 
 
 @login_required(login_url='accounts:login')
 def dashboard(request):
-    # لغو رزروهای منقضی
+    # 
     Reservation.objects.filter(
         user=request.user,
         status="pending",
