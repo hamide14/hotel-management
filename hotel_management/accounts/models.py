@@ -22,7 +22,7 @@ class CustomUser(AbstractUser):
 
 class EmailOTP(models.Model):
     #one to many realationship , one otp one user but one user many otp
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)# connect Customuser instead of User
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)# connect Customuser instead of User
     code = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
      

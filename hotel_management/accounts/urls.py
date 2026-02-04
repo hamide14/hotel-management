@@ -13,6 +13,6 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(next_page='/home/'), name="logout"),
     path("otp/", views.send_otp, name="send_otp"),
     path("otp/verify/", views.verify_otp, name="verify_otp"),
-    path("verify-signup-otp/", views.verify_signup_otp, name="verify_signup_otp"),
+    
 
 ]
