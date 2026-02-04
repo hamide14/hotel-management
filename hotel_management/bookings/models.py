@@ -10,23 +10,30 @@ ROOM_CHOICES = [
     ('Suite',  'Suite'),
 ]
 
-# قیمت و ظرفیت اتاق‌ها ثابت
+
 ROOM_CAPACITY = {'Single': 5, 'Double': 3, 'Suite': 2}
 ROOM_PRICE = {'Single': 1000, 'Double': 1800, 'Suite': 3000}
 
+
+
+#create a model for reservations
 class Reservation(models.Model):
+    
+    #reserve status 
     STATUS_CHOICES = (
         ("pending", "Pending"),
         ("paid", "Paid"),
         ("cancelled", "Cancelled"),
     )
 
+    #each reservation for one user , one user many reservations
+    #if user deleted , reservation deleted
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     room_type = models.CharField(max_length=20)  # فقط نام اتاق
     checkin_date = models.DateField()
     checkout_date = models.DateField()
     guests = models.PositiveIntegerField(default=1)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True) # time of reserve
 
     is_paid = models.BooleanField(default=False)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
@@ -35,7 +42,7 @@ class Reservation(models.Model):
     def save(self, *args, **kwargs):
         if not self.payment_deadline:
             self.payment_deadline = timezone.now() + timedelta(minutes=10)
-        super().save(*args, **kwargs)
+        super().save(*args, **kwargs) #save reserve in database
 
     @property
     def nights(self):
