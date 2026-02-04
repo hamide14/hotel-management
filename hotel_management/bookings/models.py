@@ -1,8 +1,18 @@
 from django.db import models
 from django.conf import settings
-from rooms.models import RoomType
 from django.utils import timezone
 from datetime import timedelta
+
+
+ROOM_CHOICES = [
+    ('Single', 'Single'),
+    ('Double', 'Double'),
+    ('Suite',  'Suite'),
+]
+
+# قیمت و ظرفیت اتاق‌ها ثابت
+ROOM_CAPACITY = {'Single': 5, 'Double': 3, 'Suite': 2}
+ROOM_PRICE = {'Single': 1000, 'Double': 1800, 'Suite': 3000}
 
 class Reservation(models.Model):
     STATUS_CHOICES = (
@@ -12,13 +22,12 @@ class Reservation(models.Model):
     )
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE)
+    room_type = models.CharField(max_length=20)  # فقط نام اتاق
     checkin_date = models.DateField()
     checkout_date = models.DateField()
-    guests = models.PositiveIntegerField()
+    guests = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
 
-  
     is_paid = models.BooleanField(default=False)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
     payment_deadline = models.DateTimeField(null=True, blank=True)
@@ -29,6 +38,14 @@ class Reservation(models.Model):
         super().save(*args, **kwargs)
 
     @property
+    def nights(self):
+        return (self.checkout_date - self.checkin_date).days
+
+    @property
+    def total_price(self):
+        return self.nights * ROOM_PRICE.get(self.room_type, 0)
+
+    @property
     def is_payment_pending(self):
         return self.status == "pending" and not self.is_paid and timezone.now() < self.payment_deadline
 
@@ -37,4 +54,4 @@ class Reservation(models.Model):
         return self.status == "pending" and not self.is_paid and timezone.now() >= self.payment_deadline
 
     def __str__(self):
-        return f"{self.user.first_name} - {self.room_type.name} ({self.checkin_date} to {self.checkout_date})"
+        return f"{self.user.first_name} - {self.room_type} ({self.checkin_date} to {self.checkout_date})"

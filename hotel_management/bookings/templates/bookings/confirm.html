@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="fa">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <title>Confirm Reservation</title>
-  </head>
-  <body>
-    <h2>Confirm Your Reservation</h2>
+</head>
+<body>
+<h2>Confirm Your Reservation</h2>
 
-    <p>Room: {{ reservation.room_type.name }}</p>
-    <p>From: {{ reservation.checkin_date }}</p>
-    <p>To: {{ reservation.checkout_date }}</p>
+<p>Room: {{ reservation.room_type }}</p>
+<p>From: {{ reservation.checkin_date }}</p>
+<p>To: {{ reservation.checkout_date }}</p>
+<p>Nights: {{ reservation.nights }}</p>
+<p>Total Price: {{ reservation.total_price }}</p>
 
-    <p style="color:red;">⏳ You have until {{ reservation.payment_deadline }} to complete payment</p>
+<p style="color:red;">⏳ You have until {{ reservation.payment_deadline|date:"Y-m-d H:i" }} to complete payment</p>
 
-    <a href="{% url 'bookings:pay' reservation.id %}">💳 Pay Now</a>
+<a href="{% url 'bookings:pay' reservation.id %}">💳 Pay Now</a>
 
-    <br /><br />
-
-    <a href="{% url 'home:home' %}">Back to Home</a>
-  </body>
+<br /><br />
+<a href="{% url 'home:home' %}">Back to Home</a>
+</body>
 </html>

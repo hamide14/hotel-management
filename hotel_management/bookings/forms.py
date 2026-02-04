@@ -1,8 +1,17 @@
 from django import forms
 from .models import Reservation
-from rooms.models import RoomType
+
+ROOM_CHOICES = [
+    ('Single', 'Single'),
+    ('Double', 'Double'),
+    ('Suite',  'Suite'),
+]
+
+
 
 class ReservationForm(forms.ModelForm):
+    room_type = forms.ChoiceField(choices=ROOM_CHOICES, label="Room Type")
+
     class Meta:
         model = Reservation
         fields = ['room_type', 'checkin_date', 'checkout_date', 'guests']
