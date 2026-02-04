@@ -7,8 +7,8 @@ from datetime import timedelta
 
 #if we had just User we cound not change username 
 class CustomUser(AbstractUser):
-    
-    usename= None # we dont need username that why we used abstractuser 
+    username = None
+   # we dont need username that why we used abstractuser 
     phone_number = models.CharField(max_length=15, unique=True)
 
     USERNAME_FIELD = 'phone_number'#users will login wiht phone number  
@@ -30,3 +30,15 @@ class EmailOTP(models.Model):
      #otp has 5 min , this checks if its still valid
     def is_valid(self):
         return timezone.now() < self.created_at + timedelta(minutes=5)
+
+
+
+class Booking(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    room_number = models.CharField(max_length=10)
+    check_in = models.DateField()
+    check_out = models.DateField()
+    status = models.CharField(max_length=20, choices=[("pending","Pending"),("confirmed","Confirmed"),("cancelled","Cancelled")])
+
+    def __str__(self):
+        return f"{self.user} - Room {self.room_number}"

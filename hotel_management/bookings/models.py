@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from datetime import timedelta
+from accounts.models import CustomUser
+
 
 
 ROOM_CHOICES = [
@@ -62,3 +64,28 @@ class Reservation(models.Model):
 
     def __str__(self):
         return f"{self.user.first_name} - {self.room_type} ({self.checkin_date} to {self.checkout_date})"
+
+
+
+
+
+
+class Booking(models.Model):
+    user = models.ForeignKey(
+        CustomUser, 
+        on_delete=models.CASCADE, 
+        related_name='bookings'  # <--- اینجا اضافه شد
+    )
+    check_in = models.DateField()
+    check_out = models.DateField()
+    room_number = models.IntegerField()
+    
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('checked_in', 'Checked In'),
+        ('checked_out', 'Checked Out'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+
+    def __str__(self):
+        return f"Booking {self.id} - {self.user.phone_number}"

@@ -5,7 +5,7 @@ from django.utils import timezone
 from datetime import timedelta
 
 from .forms import ReservationForm
-from .models import Reservation, ROOM_CAPACITY, ROOM_PRICE
+from .models import Reservation, ROOM_CAPACITY, ROOM_PRICE, Booking
 
 
 
@@ -52,6 +52,13 @@ def reserve(request):
                     reservation.status = "pending"
                     reservation.payment_deadline = timezone.now() + timedelta(minutes=10)
                     reservation.save()
+                    Booking.objects.create(
+                        user=reservation.user,
+                        check_in=reservation.checkin_date,
+                        check_out=reservation.checkout_date,
+                        room_number=1,
+                        status='pending'
+                    )
 
                     
                     messages.success(
