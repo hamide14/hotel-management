@@ -18,12 +18,13 @@ class BookingAdmin(admin.ModelAdmin):
     search_fields = ('user__phone_number', 'user__first_name', 'user__last_name')
     
     
+    
     from django.contrib import admin
 from .models import Reservation
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ['user', 'room_type', 'checkin_date', 'checkout_date', 'guests', 'status', 'is_paid']
+    list_display = ['id', 'user', 'room_type', 'checkin_date', 'checkout_date', 'guests', 'status', 'is_paid']
     list_filter = ['status', 'room_type', 'is_paid']
     search_fields = ['user__phone_number', 'user__first_name', 'user__last_name']
 
