@@ -5,5 +5,6 @@ app_name = "home"
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('dashboard/', views.dashboard, name='dashboard'),
+    #run function views.dashboard when url is dashboard
+    path('dashboard/', views.dashboard , name='dashboard'),
 ]

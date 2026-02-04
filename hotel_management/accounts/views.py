@@ -15,13 +15,16 @@ from .forms import EmailForm, OTPForm
 
 def signup(request):
     if request.method == "POST":
+        #create login form from customusercreadtionform  and put data in it
         form = CustomUserCreationForm(request.POST)
+        # we validate data 
         if form.is_valid():
-            form.save()
+            form.save() #save in customeruser model and go to done page
             return redirect("accounts:signup_done")
-    else:
+    else:# its Get so empty form there
         form = CustomUserCreationForm()
-
+        
+    #context render and form goes to context
     return render(request, "signup/signup.html", {"form": form})
 
 
@@ -45,9 +48,9 @@ def login_view(request):
                 login(request, user)
                 return redirect("home:home")
             else:
-                # پیام خطا به کاربر
+                
                 messages.error(request, "Phone number or password is incorrect")
-                # فرم رو دوباره با پیام خطا رندر می‌کنیم
+             
                 return render(request, "login/login.html", {"form": form})
     else:
         form = LoginForm()
