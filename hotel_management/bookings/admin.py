@@ -2,8 +2,10 @@ from django.contrib import admin
 
 # Register your models here.
 # bookings/admin.py
-from django.contrib import admin
+
 from .models import Booking
+
+from .models import Reservation
 
 @admin.register(Booking)
 # class BookingAdmin(admin.ModelAdmin):
@@ -19,8 +21,7 @@ class BookingAdmin(admin.ModelAdmin):
     
     
     
-    from django.contrib import admin
-from .models import Reservation
+
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):

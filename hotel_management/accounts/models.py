@@ -33,13 +33,3 @@ class EmailOTP(models.Model):
 
 
 
-class Booking(models.Model):
-    
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    room_number = models.CharField(max_length=10)
-    check_in = models.DateField()
-    check_out = models.DateField()
-    status = models.CharField(max_length=20, choices=[("pending","Pending"),("confirmed","Confirmed"),("cancelled","Cancelled")])
-
-    def __str__(self):
-        return f"{self.user} - Room {self.room_number}"

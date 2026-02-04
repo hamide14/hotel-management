@@ -26,7 +26,6 @@ app_name = "accounts"
 
 urlpatterns = [
     path("signup/", views.signup, name="signup"),
-    # path("signup_done/", views.signup_done, name="signup_done"),  # دیگه لازم نیست
     path("login/", views.login_view, name="login"),
     path("logout/", LogoutView.as_view(next_page='/home/'), name="logout"),
     path("otp/", views.send_otp, name="send_otp"),           

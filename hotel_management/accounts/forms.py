@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm # defult form for login
 from .models import CustomUser # our custom user model
 
 #modelform is directly linked to a model 
+#this form will used for signup
 class CustomUserCreationForm(UserCreationForm):
     # meta shows used model and form fields
     class Meta:
@@ -22,7 +23,7 @@ class LoginForm(forms.Form):
 class CustomUserChangeForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name', 'email', 'phone_number']
+        fields = ['first_name', 'last_name', 'email', 'phone_number' ] #'password']
 
 #simple form for email input , usef for otp
 class EmailForm(forms.Form):

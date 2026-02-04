@@ -10,10 +10,12 @@ from django.conf import settings
 from .models import EmailOTP
 from .forms import EmailForm, OTPForm
 
+#what do we get when we click on any url
+
 
 def signup(request):
     if request.method == "POST":
-        #create login form from customusercreadtionform  and put data in it
+        #create user form from customusercreadtionform  and put data in it
         form = CustomUserCreationForm(request.POST)
         # we validate data 
         if form.is_valid():
@@ -32,7 +34,7 @@ def signup(request):
                 fail_silently=False
             )
 
-            request.session["otp_user_id"] = user.id
+            request.session["otp_user_id"] = user.id #save user uid in session
             return redirect("accounts:verify_otp")
     else:# its Get so empty form there
         form = CustomUserCreationForm()
@@ -64,7 +66,7 @@ def login_view(request):
                     return redirect("accounts:verify_otp")
             else:
                 messages.error(request, "Phone number or password is incorrect")
-                return render(request, "login/login.html", {"form": form})
+                return render(request, "login/login.html", {"form": form}) #try again
     else: #if its get just empty form 
         form = LoginForm()
         

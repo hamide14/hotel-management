@@ -2,12 +2,15 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
 
+
+
+#class for admin panel
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
     list_display = ('id', 'phone_number', 'first_name', 'last_name', 'is_staff', 'is_active')
     list_filter = ('is_staff', 'is_active')
     search_fields = ('phone_number', 'first_name', 'last_name')
-    ordering = ('id',)  # <- اینو تغییر بده
+    ordering = ('id',)  
     fieldsets = (
         (None, {'fields': ('phone_number', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'email')}),
