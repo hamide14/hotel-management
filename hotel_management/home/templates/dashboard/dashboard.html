@@ -1,5 +1,7 @@
-
 <h2>Profile Information</h2>
+
+<!-- لینک بازگشت به هوم -->
+<a href="{% url 'home:home' %}" class="btn btn-primary" style="margin-bottom:10px; display:inline-block;">بازگشت به صفحه اصلی</a>
 
 {% if message %}
   <p style="color:green;">{{ message }}</p>
@@ -42,29 +44,3 @@
     </tr>
   {% endfor %}
 </table>
-
-{% comment %} <h2>Reservation History</h2>
-<table border="1">
-  <tr>
-    <th>Room Type</th>
-    <th>Check-in</th>
-    <th>Check-out</th>
-    <th>Status</th>
-    <th>Action</th>
-  </tr>
-  {% for r in reservations %}
-    <tr>
-      <td>{{ r.room_type.name }}</td>
-      <td>{{ r.check_in }}</td>
-      <td>{{ r.check_out }}</td>
-      <td>{{ r.status }}</td>
-      <td>
-        {% if r.status == 'pending' %}
-          <a href="{% url 'bookings:payment' r.id %}">Pay Now</a>
-        {% else %}
-          -
-        {% endif %}
-      </td>
-    </tr>
-  {% endfor %}
-</table> {% endcomment %}

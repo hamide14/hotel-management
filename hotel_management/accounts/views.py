@@ -6,6 +6,7 @@ from .forms import CustomUserCreationForm, LoginForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 import random
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
@@ -91,9 +92,11 @@ def send_otp(request):
             EmailOTP.objects.create(user=user, code=code)
             # function for sending email
             send_mail(
-                "Your Login Code",
-                f"Your OTP code is: {code}",
-                [email]
+                "Your Login Code",                # subject
+    f"Your OTP code is: {code}",     # message
+    settings.DEFAULT_FROM_EMAIL,      # from_email
+    [email],                          # recipient_list
+    fail_silently=False
             )
 
             request.session["otp_user_id"] = user.id #store user id in session for later use
