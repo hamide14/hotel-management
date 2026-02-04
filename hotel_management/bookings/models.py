@@ -31,7 +31,7 @@ class Reservation(models.Model):
     #each reservation for one user , one user many reservations
     #if user deleted , reservation deleted
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    room_type = models.CharField(max_length=20)  # فقط نام اتاق
+    room_type = models.CharField(max_length=20) 
     checkin_date = models.DateField()
     checkout_date = models.DateField()
     guests = models.PositiveIntegerField(default=1)
@@ -74,7 +74,7 @@ class Booking(models.Model):
     user = models.ForeignKey(
         CustomUser, 
         on_delete=models.CASCADE, 
-        related_name='bookings'  # <--- اینجا اضافه شد
+        related_name='bookings'  
     )
     check_in = models.DateField()
     check_out = models.DateField()

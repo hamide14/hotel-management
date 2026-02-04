@@ -14,6 +14,9 @@ def home(request):
 
 
 
+
+
+
 @login_required(login_url='accounts:login') #only logged in users can see dashboard if not redirect to login page
 
 #path('dashboard/', views.dashboard , name='dashboard')
@@ -33,6 +36,9 @@ def dashboard(request):
         # if user just open the dashboard mean its get and only form will filled with info
         form = CustomUserChangeForm(instance=user)
         message = None
+        
+        
+        
     # take all current reservation from reservaion model
     #and sort by newest first
     reservations = Reservation.objects.filter(

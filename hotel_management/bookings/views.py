@@ -7,8 +7,7 @@ from datetime import timedelta
 from .forms import ReservationForm
 from .models import Reservation, ROOM_CAPACITY, ROOM_PRICE, Booking
 
-
-
+#we enter urls about booking what do we get
 
 @login_required(login_url='accounts:login')
 def reserve(request):
@@ -24,6 +23,7 @@ def reserve(request):
                 messages.error(request, "Checkout date must be after check-in date.")
             else:
                 #if pending reservation is out of time it will be cancelled
+                #cancle timeout reseverse
                 Reservation.objects.filter(
                     room_type=room_type,
                     status="pending",
@@ -46,12 +46,15 @@ def reserve(request):
                     )
                 else:
                     #we have free room so save
-                    reservation = form.save(commit=False)# not yet save in database
+                    reservation = form.save(commit=False)# not yet save in database 
+                    #convert form to object
                     reservation.user = request.user
                     reservation.is_paid = False
                     reservation.status = "pending"
                     reservation.payment_deadline = timezone.now() + timedelta(minutes=10)
                     reservation.save()
+                    
+                    
                     Booking.objects.create(
                         user=reservation.user,
                         check_in=reservation.checkin_date,
@@ -92,6 +95,8 @@ def confirm_reservation(request, reservation_id):
         return redirect('bookings:dashboard')
 
     return render(request, "bookings/confirm.html", {"reservation": reservation})
+
+
 
 
 @login_required(login_url='accounts:login')
