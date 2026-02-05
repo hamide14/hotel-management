@@ -1,12 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Code</title>
+    <link rel="stylesheet" href="{% static 'otp/verify_otp.css' %}">
+</head>
+<body>
 
-<h2>Enter OTP</h2>
+    <div class="auth-card">
+        <div class="header">
+            <div class="icon-circle">🛡️</div>
+            <h2>Verify Your Code</h2>
+            <p class="subtitle">Please enter the verification code sent to your email.</p>
+        </div>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Verify</button>
-</form>
+        <form method="post" class="otp-form">
+            {% csrf_token %}
+            <div class="form-group otp-input-group">
+                {{ form.otp_code }} 
+                {% if not form.otp_code %}
+                    {{ form.as_p }} {% endif %}
+            </div>
+            <button type="submit" class="auth-btn">Verify Account</button>
+        </form>
 
-{% if error %}
-<p style="color:red">{{ error }}</p>
-{% endif %}
+        {% if error %}
+            <div class="error-msg">
+                <span>❌</span> {{ error }}
+            </div>
+        {% endif %}
+
+        <div class="auth-footer">
+            <p class="resend-text">Didn't receive the code?</p>
+            <a href="{% url 'accounts:send_otp' %}" class="resend-link">Resend Code</a>
+        </div>
+    </div>
+
+</body>
+</html>

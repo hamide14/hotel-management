@@ -1,2 +1,32 @@
-<h1>✅ Registration Successful!</h1>
-<a href="{% url 'accounts:login' %}">Log In</a>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    <link rel="stylesheet" href="{% static 'signup/signup_done.css' %}">
+</head>
+<body>
+
+    <div class="success-card">
+        <div class="icon-wrapper">
+            <div class="checkmark-circle">
+                <span class="checkmark">✓</span>
+            </div>
+        </div>
+        
+        <h1>Registration Successful!</h1>
+        <p class="message">Your account has been created successfully. You can now log in to your dashboard.</p>
+        
+        <div class="actions">
+            <a href="{% url 'accounts:login' %}" class="login-btn">Go to Login</a>
+        </div>
+        
+        <div class="footer">
+            <a href="{% url 'home:home' %}" class="home-link">Back to Home</a>
+        </div>
+    </div>
+
+</body>
+</html>

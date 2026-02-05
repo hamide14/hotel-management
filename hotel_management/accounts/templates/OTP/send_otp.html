@@ -1,12 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with Email</title>
+    <link rel="stylesheet" href="{% static 'otp/send_otp.css' %}">
+</head>
+<body>
 
-<h2>Login with Email</h2>
+    <div class="auth-card">
+        <div class="header">
+            <div class="icon-box">✉️</div>
+            <h2>Email Login</h2>
+            <p class="subtitle">We'll send a verification code to your inbox</p>
+        </div>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Send Code</button>
-</form>
+        <form method="post" class="otp-form">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="auth-btn">Send Code</button>
+        </form>
 
-{% if error %}
-<p style="color:red">{{ error }}</p>
-{% endif %}
+        {% if error %}
+            <div class="error-msg">
+                <span class="warning-icon">⚠️</span> {{ error }}
+            </div>
+        {% endif %}
+
+        <div class="auth-footer">
+            <a href="{% url 'accounts:login' %}" class="back-link">← Back to Password Login</a>
+        </div>
+    </div>
+
+</body>
+</html>

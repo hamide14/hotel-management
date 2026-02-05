@@ -1,0 +1,113 @@
+/* Base Reset */
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background: #f0f2f5;
+    display: flex; justify-content: center; align-items: center;
+    height: 100vh; padding: 20px;
+}
+
+.auth-card {
+    background: #ffffff;
+    padding: 30px 25px; /* کاهش پدینگ برای ظرافت بیشتر */
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 340px; /* کوچک‌تر کردن عرض کارت */
+    text-align: center;
+    animation: fadeIn 0.4s ease-out;
+}
+
+/* Header & Icon */
+.icon-circle {
+    width: 54px; /* سایز ظریف‌تر */
+    height: 54px;
+    background: #f0f7ff;
+    font-size: 24px;
+    display: flex;
+    align-items: center; justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+}
+
+h2 { color: #1a202c; font-size: 20px; margin-bottom: 6px; font-weight: 600; }
+.subtitle { color: #718096; font-size: 13px; margin-bottom: 25px; line-height: 1.4; }
+
+/* Input Styling */
+.input-label {
+    display: block; font-size: 12px; font-weight: 600; 
+    color: #4a5568; margin-bottom: 8px; text-align: left;
+}
+
+.otp-input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    outline: none;
+    text-align: center;
+    font-size: 20px; /* اندازه فونت معقول‌تر */
+    letter-spacing: 6px; /* فاصله حروف کمتر برای جلوگیری از به هم ریختگی */
+    font-weight: 600;
+    color: #2d3748;
+    transition: all 0.2s;
+}
+
+.otp-input-group input:focus {
+    border-color: #4a90e2;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(74,144,226,0.1);
+}
+
+/* Button */
+.auth-btn {
+    width: 100%;
+    padding: 11px;
+    background: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 18px;
+}
+
+.auth-btn:hover { background: #357abd; }
+
+/* Error Message */
+.error-msg {
+    margin-top: 15px;
+    padding: 8px;
+    background: #fff5f5;
+    color: #c53030;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+/* Footer */
+.auth-footer {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #edf2f7;
+}
+
+.resend-text { font-size: 12px; color: #718096; display: block; margin-bottom: 4px; }
+.resend-link {
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.resend-link:hover { text-decoration: underline; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

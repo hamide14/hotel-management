@@ -1,0 +1,99 @@
+/* Base Reset */
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+    background: #f0f2f5;
+    display: flex; justify-content: center; align-items: center;
+    height: 100vh; padding: 20px;
+}
+
+.success-card {
+    background: #ffffff;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 360px;
+    text-align: center;
+    animation: slideUp 0.5s ease-out;
+}
+
+/* Checkmark Animation */
+.icon-wrapper {
+    margin-bottom: 25px;
+}
+
+.checkmark-circle {
+    width: 70px;
+    height: 70px;
+    background: #e6fffa;
+    color: #38a169;
+    font-size: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto;
+    border: 2px solid #c6f6d5;
+}
+
+h1 {
+    color: #2d3748;
+    font-size: 22px;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.message {
+    color: #718096;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Button */
+.login-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: #4a90e2;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(74,144,226,0.2);
+}
+
+.login-btn:hover {
+    background: #357abd;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(74,144,226,0.3);
+}
+
+.footer {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #edf2f7;
+}
+
+.home-link {
+    color: #a0aec0;
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+}
+
+.home-link:hover {
+    color: #4a90e2;
+}
+
+/* Animations */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

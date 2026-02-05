@@ -1,0 +1,61 @@
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; padding: 20px;
+}
+
+.confirm-card {
+    background: #fff; padding: 40px; border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    width: 100%; max-width: 450px;
+}
+
+.header { text-align: center; margin-bottom: 30px; }
+h1 { color: #2c3e50; font-size: 24px; margin-bottom: 5px; }
+.subtitle { color: #7f8c8d; font-size: 14px; }
+
+.invoice-details {
+    background: #f8fafc; padding: 20px; border-radius: 12px;
+    margin-bottom: 25px; border: 1px solid #edf2f7;
+}
+
+.detail-row {
+    display: flex; justify-content: space-between;
+    margin-bottom: 12px; color: #4a5568; font-size: 15px;
+}
+
+hr { border: none; border-top: 1px solid #e2e8f0; margin: 15px 0; }
+
+.total-row {
+    display: flex; justify-content: space-between; align-items: center;
+}
+.total-row span { font-weight: 700; color: #2d3748; }
+.total-row .price { color: #4a90e2; font-size: 22px; }
+
+.deadline-box {
+    background: #fff5f5; border: 1px solid #feb2b2;
+    padding: 15px; border-radius: 10px; text-align: center;
+    margin-bottom: 30px;
+}
+.deadline-box p { color: #c53030; font-size: 13px; margin-bottom: 5px; }
+.deadline-box strong { color: #9b2c2c; font-size: 15px; }
+
+.pay-btn {
+    display: block; width: 100%; padding: 15px;
+    background: #4a90e2; color: #fff; text-align: center;
+    text-decoration: none; border-radius: 10px;
+    font-weight: 700; font-size: 16px; transition: 0.3s;
+    margin-bottom: 15px;
+}
+.pay-btn:hover { background: #357abd; transform: translateY(-2px); }
+
+.back-link {
+    display: block; text-align: center; color: #a0aec0;
+    text-decoration: none; font-size: 14px; transition: 0.3s;
+}
+.back-link:hover { color: #4a5568; }

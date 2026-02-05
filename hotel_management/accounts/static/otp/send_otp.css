@@ -1,0 +1,61 @@
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    display: flex; justify-content: center; align-items: center;
+    height: 100vh; padding: 20px;
+}
+
+.auth-card {
+    background: #fff; padding: 40px; border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    width: 100%; max-width: 380px;
+    text-align: center;
+}
+
+.icon-box {
+    font-size: 40px; margin-bottom: 15px;
+}
+
+h2 { color: #333; margin-bottom: 8px; font-weight: 700; }
+.subtitle { color: #777; font-size: 14px; margin-bottom: 25px; line-height: 1.4; }
+
+/* Django Form Styling */
+.form-group p { margin-bottom: 15px; text-align: left; }
+.form-group label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: 600; color: #555; }
+
+input {
+    width: 100%; padding: 12px; border: 1px solid #ddd;
+    border-radius: 8px; background: #f9f9f9; outline: none; transition: 0.3s;
+}
+
+input:focus { border-color: #4a90e2; background: #fff; box-shadow: 0 0 0 4px rgba(74,144,226,0.1); }
+
+.auth-btn {
+    width: 100%; padding: 13px; background: #4a90e2; color: #fff;
+    border: none; border-radius: 8px; font-size: 16px; font-weight: 600;
+    cursor: pointer; transition: 0.3s; margin-top: 5px;
+}
+
+.auth-btn:hover { background: #357abd; transform: translateY(-1px); }
+
+/* Error Styling */
+.error-msg {
+    margin-top: 20px; padding: 12px; background: #fff5f5;
+    color: #e74c3c; border-radius: 8px; font-size: 13px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    border: 1px solid #fed7d7;
+}
+
+.auth-footer {
+    margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee;
+}
+
+.back-link {
+    text-decoration: none; color: #777; font-size: 13px; transition: 0.2s;
+}
+
+.back-link:hover { color: #4a90e2; }
