@@ -1,39 +1,55 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Home Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{% static 'home/home.css' %}">
 </head>
 <body>
 
-<nav>
-  {% if request.user.is_authenticated %}
-    <span>Welcome {{ request.user.first_name }}!</span>
+<header class="navbar">
+    <div class="nav-container">
+        <div class="logo">MyService</div>
+        
+        <nav class="nav-links">
+            {% if request.user.is_authenticated %}
+                <span class="welcome-msg">Welcome, <strong>{{ request.user.first_name }}</strong>!</span>
+                <a href="{% url 'bookings:reserve' %}" class="nav-item">Reserve Room</a>
+                <a href="{% url 'home:dashboard' %}" class="nav-item">Profile</a>
+                
+                <form method="POST" action="{% url 'accounts:logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn">Log Out</button>
+                </form>
+            {% else %}
+                <a href="{% url 'bookings:reserve' %}" class="nav-item">Reserve Room</a>
+                <a href="{% url 'accounts:login' %}" class="nav-item">Log In</a>
+                <a href="{% url 'accounts:signup' %}" class="signup-pill">Sign Up</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
 
-    <a href="{% url 'bookings:reserve' %}">Reserve a Room</a>
-    <a href="{% url 'home:dashboard' %}">Profile</a>
-
-    <form method="POST" action="{% url 'accounts:logout' %}" style="display:inline;">
-      {% csrf_token %}
-      <button type="submit">Log Out</button>
-    </form>
-
-  {% else %}
-    <a href="{% url 'accounts:login' %}?next={% url 'bookings:reserve' %}">
-      Reserve a Room
-    </a>
-    <a href="{% url 'accounts:login' %}">Log In</a>
-    <a href="{% url 'accounts:signup' %}">Sign Up</a>
-  {% endif %}
-</nav>
-
-<h1>Home Page</h1>
-
-{% if request.user.is_authenticated %}
-  <p>You are logged in. You can access the dashboard and site features.</p>
-{% else %}
-  <p>Welcome! Please log in or sign up to access the site features.</p>
-{% endif %}
+<main class="main-content">
+    <div class="hero-card">
+        <h1>Welcome to Home Page</h1>
+        
+        {% if request.user.is_authenticated %}
+            <p>You are successfully logged in. Explore your dashboard and manage your bookings easily.</p>
+            <div class="cta-group">
+                <a href="{% url 'home:dashboard' %}" class="btn-primary">Go to Dashboard</a>
+            </div>
+        {% else %}
+            <p>Ready to get started? Please log in or create a new account to access all site features and services.</p>
+            <div class="cta-group">
+                <a href="{% url 'accounts:login' %}" class="btn-primary">Get Started</a>
+                <a href="{% url 'accounts:signup' %}" class="btn-outline">Create Account</a>
+            </div>
+        {% endif %}
+    </div>
+</main>
 
 </body>
 </html>

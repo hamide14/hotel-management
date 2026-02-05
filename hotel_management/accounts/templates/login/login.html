@@ -1,13 +1,28 @@
-<!-- login.html -->
-<h2>Log In</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log In</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+    <link rel="stylesheet" href="{% static 'login/login.css' %}">
+</head>
+<body>
+    <div class="auth-card">
+        <h2>Log In</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="auth-btn">Log In</button>
+        </form>
 
-<p>
-    <a href="{% url 'accounts:send_otp' %}">
-        Forgot password
-    </a>
-</p>
+        <div class="extra-links">
+            <a href="{% url 'accounts:send_otp' %}">Forgot password?</a>
+        </div>
+        
+        <div class="auth-footer">
+            Don't have an account? <a href="{% url 'accounts:signup' %}">Sign Up</a>
+        </div>
+    </div>
+</body>
+</html>

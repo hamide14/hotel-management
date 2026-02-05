@@ -1,46 +1,77 @@
-<h2>Profile Information</h2>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="{% static 'dashboard/dashboard.css' %}">
+</head>
+<body>
 
-<!-- لینک بازگشت به هوم -->
-<a href="{% url 'home:home' %}" class="btn btn-primary" style="margin-bottom:10px; display:inline-block;">بازگشت به صفحه اصلی</a>
-
-{% if message %}
-  <p style="color:green;">{{ message }}</p>
-{% endif %}
-
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Update Profile</button>
-</form>
-
-<hr />
-
-<h2>رزروهای من</h2>
-<table border="1" cellpadding="5">
-  <tr>
-    <th>اتاق</th>
-    <th>تاریخ</th>
-    <th>وضعیت پرداخت</th>
-    <th>عملیات</th>
-  </tr>
-  {% for r in reservations %}
-    <tr>
-      <td>{{ r.room_type.name }}</td>
-      <td>{{ r.checkin_date }} تا {{ r.checkout_date }}</td>
-      <td>
-        {% if r.is_paid %}
-          پرداخت شده
-        {% elif r.is_payment_pending %}
-          Pending
-        {% else %}
-          Expired
+<div class="dashboard-container">
+    <div class="top-bar">
+        <a href="{% url 'home:home' %}" class="back-link">← Back to Home</a>
+        {% if message %}
+            <div class="alert success">{{ message }}</div>
         {% endif %}
-      </td>
-      <td>
-        {% if r.is_payment_pending %}
-          <a href="{% url 'bookings:pay' r.id %}">پرداخت</a>
-        {% endif %}
-      </td>
-    </tr>
-  {% endfor %}
-</table>
+    </div>
+
+    <div class="dashboard-grid">
+        <section class="card profile-card">
+            <h2>Profile Information</h2>
+            <form method="post" class="profile-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="update-btn">Update Profile</button>
+            </form>
+        </section>
+
+        <section class="card reservations-card">
+            <h2>My Reservations</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Room Type</th>
+                            <th>Date Range</th>
+                            <th>Payment Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in reservations %}
+                        <tr>
+                            <td class="font-bold">{{ r.room_type.name }}</td>
+                            <td class="text-muted">{{ r.checkin_date }} to {{ r.checkout_date }}</td>
+                            <td>
+                                {% if r.is_paid %}
+                                    <span class="status paid">Paid</span>
+                                {% elif r.is_payment_pending %}
+                                    <span class="status pending">Pending</span>
+                                {% else %}
+                                    <span class="status expired">Expired</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if r.is_payment_pending %}
+                                    <a href="{% url 'bookings:pay' r.id %}" class="pay-link">Pay Now</a>
+                                {% else %}
+                                    <span class="no-action">-</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="empty-state">No reservations found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+
+</body>
+</html>
